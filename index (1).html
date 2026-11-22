@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gran Rifa · ₡50.000</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:dark;
+  --bg:#0c1311; --bg2:#121c18; --ink:#f3ecdb; --mute:#9aa59d; --gold:#d8b565; --gold2:#f1dba0;
+  --line:rgba(216,181,101,.22);
+  --ok:#2fa56b; --ok-bg:rgba(47,165,107,.14); --ok-ink:#aef0cb;
+  --no:#c9473f; --no-bg:rgba(201,71,63,.18); --no-ink:#ffb5ae;
+}
+@media (prefers-color-scheme:light){:root{color-scheme:light;
+  --bg:#f6f1e4; --bg2:#fffaf0; --ink:#1b2420; --mute:#5d6a62; --gold:#8f6b1c; --gold2:#6f5010;
+  --line:rgba(143,107,28,.3); --ok:#1f8a54; --ok-bg:rgba(31,138,84,.12); --ok-ink:#0f5a35;
+  --no:#b83a33; --no-bg:rgba(184,58,51,.14); --no-ink:#8a231d;}}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(1200px 600px at 50% -10%,var(--bg2),var(--bg));color:var(--ink);
+  font-family:Manrope,system-ui,sans-serif;min-height:100vh;-webkit-tap-highlight-color:transparent}
+main{max-width:760px;margin:0 auto;padding:0 18px 60px}
+.top{margin:0 -18px;padding:12px 18px;text-align:center;background:var(--bg2);border-bottom:1px solid var(--gold);
+  color:var(--gold2);font-size:14.5px;font-weight:500;line-height:1.45}
+.hero{text-align:center;padding:34px 0 30px;border-bottom:1px solid var(--line)}
+.hero p.k{margin:0 0 6px;color:var(--mute);font-size:15px}
+.prize{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;line-height:.95;
+  font-size:clamp(68px,20vw,132px);margin:0;letter-spacing:-.01em;
+  background:linear-gradient(180deg,var(--gold2),var(--gold) 70%);-webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:rise 1.1s cubic-bezier(.2,.7,.2,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(14px);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
+.hero h1{font-family:"Cormorant Garamond",Georgia,serif;font-weight:500;font-size:clamp(22px,5vw,30px);margin:14px 0 4px}
+.hero .sub{color:var(--mute);margin:0;font-size:15px}
+.stats{display:flex;justify-content:center;gap:34px;margin:26px 0 8px;flex-wrap:wrap}
+.stat b{display:block;font-family:"Cormorant Garamond",serif;font-size:38px;font-weight:600;font-variant-numeric:tabular-nums}
+.stat span{color:var(--mute);font-size:13.5px}
+.bar{height:3px;background:var(--no-bg);border-radius:3px;margin:16px auto 0;max-width:420px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--no);transition:width .6s ease}
+.legend{display:flex;justify-content:center;gap:22px;margin:26px 0 18px;font-size:14px;color:var(--mute)}
+.legend span{display:flex;align-items:center;gap:8px}
+.dot{width:11px;height:11px;border-radius:50%}
+.grid{display:grid;grid-template-columns:repeat(10,1fr);gap:6px;padding:12px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.02)}
+.n{aspect-ratio:1;border-radius:8px;border:1px solid;font:600 clamp(12px,3.4vw,18px) "Cormorant Garamond",Georgia,serif;
+  font-variant-numeric:tabular-nums;display:grid;place-items:center;padding:0;pointer-events:none;user-select:none;-webkit-user-select:none;
+  transition:transform .18s ease,background .25s,border-color .25s,color .25s}
+.n.ok{background:var(--ok-bg);border-color:var(--ok);color:var(--ok-ink)}
+.n.no{background:var(--no-bg);border-color:var(--no);color:var(--no-ink);text-decoration:line-through;text-decoration-thickness:1.5px}
+.admin .n{pointer-events:auto;cursor:pointer}
+.admin .n:active{transform:scale(.9)}
+.n.sel{outline:2px solid var(--gold);outline-offset:2px}
+.n:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.note{margin:22px 0 0;text-align:center;color:var(--mute);font-size:14px;line-height:1.6}
+.adm{margin-top:18px;padding:14px 16px;border:1px solid var(--gold);border-radius:12px;color:var(--gold2);font-size:14px;line-height:1.5}
+[hidden]{display:none!important}
+.adm textarea{width:100%;margin-top:10px;padding:10px;border-radius:8px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--ink);font:13px ui-monospace,monospace;resize:none}
+.rules{margin-top:34px;padding-top:22px;border-top:1px solid var(--line);display:grid;gap:10px;color:var(--mute);font-size:14.5px;line-height:1.55}
+.rules b{color:var(--ink);font-weight:600}
+.foot{margin-top:26px;text-align:center}
+.link{background:none;border:0;color:var(--mute);font:500 13px Manrope,sans-serif;cursor:pointer;text-decoration:underline;text-underline-offset:3px;padding:8px}
+.link:hover{color:var(--gold2)}
+dialog,.panel{background:var(--bg2);color:var(--ink);border:1px solid var(--gold);border-radius:18px;padding:24px}
+dialog{width:min(92vw,380px)}
+dialog::backdrop{background:rgba(0,0,0,.6);backdrop-filter:blur(4px)}
+.panel{margin-top:18px}
+h2{font:600 28px "Cormorant Garamond",Georgia,serif;margin:0 0 6px}
+dialog p{margin:0 0 12px;color:var(--mute);font-size:14px;line-height:1.5}
+label{display:block;font-size:13px;color:var(--mute);margin:12px 0 5px}
+input{width:100%;padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--ink);font:500 16px Manrope,sans-serif}
+input:focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
+.err{min-height:20px;margin:12px 0 0;color:var(--no-ink);font-size:13.5px}
+.row{display:flex;gap:10px;margin-top:10px}
+.btn{flex:1;padding:13px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--ink);font:600 15px Manrope,sans-serif;cursor:pointer}
+.btn.main{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#1b1608;border-color:transparent}
+.pst{display:flex;align-items:center;justify-content:space-between;gap:12px;color:var(--mute);font-size:14px}
+.pst .btn{flex:none;padding:9px 14px;font-size:13.5px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="top">El número ganador será el que salga en el premio mayor de la Lotería Nacional el 13 de diciembre.</div>
+<main>
+  <section class="hero">
+    <p class="k">Gran rifa, el premio es de</p>
+    <p class="prize">₡50.000</p>
+    <h1>Elige tu número, del 00 al 99</h1>
+    <p class="sub">Cada número cuesta ₡1.000</p>
+    <div class="stats">
+      <div class="stat"><b id="free">100</b><span>disponibles</span></div>
+      <div class="stat"><b id="sold">0</b><span>vendidos</span></div>
+    </div>
+    <div class="bar"><i id="fill"></i></div>
+  </section>
+
+  <div class="legend">
+    <span><i class="dot" style="background:var(--ok)"></i>Disponible</span>
+    <span><i class="dot" style="background:var(--no)"></i>Vendido</span>
+  </div>
+
+  <div class="grid" id="grid" role="list"></div>
+  <p class="note" id="note">Los números no se pueden elegir aquí. Para participar, contacta a quien organiza la rifa: él asigna tu número y lo marca en rojo.</p>
+
+  <div class="adm" id="adm" hidden>
+    Modo organizador: toca un número para ver y editar los datos de quien lo compró. Para que los cambios de colores lleguen a todos, copia esta línea y pégala en <b>index.html</b> de GitHub, donde dice <b>const VENDIDOS</b>.
+    <textarea id="out" rows="2" readonly></textarea>
+    <div class="row"><button class="btn" id="reset" type="button">Descartar cambios</button><button class="btn main" id="copy" type="button">Copiar línea</button></div>
+  </div>
+
+  <div class="panel" id="panel" hidden>
+    <h2 id="pt"></h2>
+    <div class="pst"><span>Estado: <b id="stl"></b></span><button class="btn" id="st" type="button"></button></div>
+    <label for="pn">Nombre del comprador</label><input id="pn" autocomplete="off">
+    <label for="pp">Teléfono</label><input id="pp" type="tel" inputmode="tel" autocomplete="off">
+    <div class="err" id="pmsg" role="status"></div>
+    <div class="row"><button class="btn" id="pclose" type="button">Cerrar</button><button class="btn main" id="save" type="button">Guardar datos</button></div>
+  </div>
+
+  <div class="rules">
+    <div><b>Premio.</b> ₡50.000 para el dueño del número ganador.</div>
+    <div><b>Sorteo.</b> El número ganador será el que salga en el premio mayor de la Lotería Nacional el 13 de diciembre.</div>
+  </div>
+  <div class="foot"><button class="link" id="open" type="button">Acceso organizador</button></div>
+</main>
+
+<dialog id="dlg">
+  <h2 id="dt">Acceso organizador</h2>
+  <p id="dp"></p>
+  <label for="u">Usuario</label><input id="u" autocomplete="username" autocapitalize="none">
+  <label for="p">Contraseña</label><input id="p" type="password" autocomplete="current-password">
+  <div id="c2"><label for="p2">Repite la contraseña</label><input id="p2" type="password" autocomplete="new-password"></div>
+  <div class="err" id="err" role="alert"></div>
+  <div class="row"><button class="btn" id="cancel" type="button">Cancelar</button><button class="btn main" id="go" type="button">Entrar</button></div>
+</dialog>
+
+<script>
+// ============================================================
+// NÚMEROS VENDIDOS: edita esta línea en GitHub cada vez que vendas.
+// Ejemplo: const VENDIDOS = [0, 7, 23, 99];
+// ============================================================
+const VENDIDOS = [];
+
+(function(){
+  var $ = function(id){ return document.getElementById(id); };
+  var K = {draft:'rifa_borrador', buyers:'rifa_compradores', cred:'rifa_acceso'};
+  function load(k, d){ try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch(e){ return d; } }
+  function save(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} }
+  var published = {}; VENDIDOS.forEach(function(n){ published[n] = true; });
+  var work = load(K.draft, null) || Object.assign({}, published);
+  var buyers = load(K.buyers, {});
+  var isAdmin = false, selected = null, setup = false, cred = null, lockUntil = 0, fails = 0;
+  var grid = $('grid'), cells = [];
+  for (var i = 0; i < 100; i++) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'n ok'; b.setAttribute('role','listitem'); b.tabIndex = -1;
+    b.textContent = String(i).padStart(2,'0'); b.dataset.n = i; grid.appendChild(b); cells.push(b);
+  }
+  function view(){ return isAdmin ? work : published; }
+  function render(){
+    var v = view(), c = 0;
+    cells.forEach(function(b,i){
+      var s = !!v[i]; if (s) c++;
+      b.className = 'n ' + (s ? 'no' : 'ok') + (String(i) === selected ? ' sel' : '');
+      b.setAttribute('aria-label', 'Número ' + b.textContent + (s ? ', vendido' : ', disponible'));
+    });
+    $('sold').textContent = c; $('free').textContent = 100 - c; $('fill').style.width = c + '%';
+    if (isAdmin) {
+      var list = Object.keys(work).map(Number).sort(function(a,b){ return a-b; });
+      $('out').value = 'const VENDIDOS = [' + list.join(', ') + '];';
+    }
+    if (selected !== null) { var s2 = !!work[selected]; $('stl').textContent = s2 ? 'Vendido' : 'Disponible'; $('st').textContent = s2 ? 'Marcar disponible' : 'Marcar vendido'; }
+  }
+  function setAdmin(on){
+    isAdmin = on; document.body.classList.toggle('admin', on);
+    cells.forEach(function(c){ c.tabIndex = on ? 0 : -1; });
+    $('adm').hidden = !on; $('note').hidden = on;
+    $('open').textContent = on ? 'Cerrar sesión' : 'Acceso organizador';
+    if (!on) { selected = null; $('panel').hidden = true; }
+    render();
+  }
+  function pmsg(t, ok){ var m = $('pmsg'); m.textContent = t || ''; m.style.color = ok ? 'var(--ok-ink)' : ''; }
+  grid.addEventListener('click', function(e){
+    var b = e.target.closest('.n'); if (!b || !isAdmin) return;
+    selected = b.dataset.n; var d = buyers[selected] || {};
+    $('pt').textContent = 'Número ' + selected.padStart(2,'0');
+    $('pn').value = d.name || ''; $('pp').value = d.phone || ''; pmsg('');
+    $('panel').hidden = false; render();
+    $('panel').scrollIntoView({behavior:'smooth', block:'nearest'});
+  });
+  $('st').onclick = function(){
+    if (selected === null) return;
+    if (work[selected]) delete work[selected]; else work[selected] = true;
+    save(K.draft, work); render();
+  };
+  $('save').onclick = function(){
+    if (selected === null) return;
+    var name = $('pn').value.trim(), phone = $('pp').value.trim();
+    if (!name && !phone) delete buyers[selected]; else buyers[selected] = {name:name, phone:phone};
+    save(K.buyers, buyers); pmsg('Datos guardados en este dispositivo.', true);
+  };
+  $('pclose').onclick = function(){ selected = null; $('panel').hidden = true; render(); };
+  $('reset').onclick = function(){ work = Object.assign({}, published); save(K.draft, work); render(); };
+  $('copy').onclick = function(){
+    $('out').select();
+    try { navigator.clipboard.writeText($('out').value); } catch(e){ try { document.execCommand('copy'); } catch(_){} }
+    $('copy').textContent = 'Copiado'; setTimeout(function(){ $('copy').textContent = 'Copiar línea'; }, 1600);
+  };
+
+  // Acceso: usuario y contraseña guardados cifrados (PBKDF2-SHA256) solo en este dispositivo.
+  function b64(buf){ return btoa(String.fromCharCode.apply(null, new Uint8Array(buf))); }
+  function unb64(s){ return Uint8Array.from(atob(s), function(c){ return c.charCodeAt(0); }); }
+  async function derive(u, p, salt, iter){
+    var key = await crypto.subtle.importKey('raw', new TextEncoder().encode(u.trim().toLowerCase() + ':' + p), 'PBKDF2', false, ['deriveBits']);
+    return b64(await crypto.subtle.deriveBits({name:'PBKDF2', salt:salt, iterations:iter, hash:'SHA-256'}, key, 256));
+  }
+  function err(t){ $('err').textContent = t || ''; }
+  $('cancel').onclick = function(){ $('dlg').close(); };
+  $('open').onclick = function(){
+    if (isAdmin) { setAdmin(false); return; }
+    cred = load(K.cred, null); setup = !cred;
+    $('c2').hidden = !setup;
+    $('dt').textContent = setup ? 'Crea tu acceso' : 'Acceso organizador';
+    $('dp').textContent = setup ? 'Elige un usuario y una contraseña de al menos 8 caracteres. Se guardan cifradas solo en este dispositivo.' : 'Escribe tu usuario y contraseña.';
+    $('go').textContent = setup ? 'Crear y entrar' : 'Entrar';
+    $('u').value = ''; $('p').value = ''; $('p2').value = ''; err(''); $('dlg').showModal();
+  };
+  $('go').onclick = async function(){
+    var wait = Math.ceil((lockUntil - Date.now()) / 1000);
+    if (wait > 0) { err('Demasiados intentos. Espera ' + wait + ' s.'); return; }
+    var u = $('u').value, p = $('p').value;
+    if (u.trim().length < 3) { err('El usuario necesita al menos 3 caracteres.'); return; }
+    if (setup && p.length < 8) { err('La contraseña necesita al menos 8 caracteres.'); return; }
+    if (setup && p !== $('p2').value) { err('Las contraseñas no coinciden.'); return; }
+    $('go').disabled = true; err('');
+    try {
+      var ok = false;
+      if (setup) {
+        var salt = crypto.getRandomValues(new Uint8Array(16)), iter = 210000;
+        save(K.cred, {salt:b64(salt), iter:iter, hash: await derive(u, p, salt, iter)}); ok = true;
+      } else ok = (await derive(u, p, unb64(cred.salt), cred.iter)) === cred.hash;
+      if (ok) { fails = 0; $('dlg').close(); setAdmin(true); }
+      else { fails++; err('Usuario o contraseña incorrectos.'); if (fails >= 5) { lockUntil = Date.now() + 30000; fails = 0; } }
+    } catch(e) { err('Algo falló. Inténtalo otra vez.'); }
+    $('go').disabled = false;
+  };
+  $('dlg').addEventListener('keydown', function(e){ if (e.key === 'Enter') $('go').click(); });
+  render();
+})();
+</script>
+</body>
+</html>
