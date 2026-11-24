@@ -76,7 +76,7 @@ app.post('/api/login', wrap(async (req, res) => {
 app.get('/api/admin/numeros', auth, wrap(async (req, res) => {
   const docs = await col.find({}).toArray();
   res.set('Cache-Control', 'no-store');
-  res.json({ items: docs.map((d) => ({ n: d._id, vendido: !!d.vendido, nombre: d.nombre || '', telefono: d.telefono || '' })) });
+  res.json({ items: docs.map((d) => ({ n: d._id, vendido: !!d.vendido, nombre: d.nombre || '', telefono: d.telefono || '', pagado: !!d.pagado })) });
 }));
 
 app.put('/api/admin/numeros/:n', auth, wrap(async (req, res) => {
@@ -85,6 +85,7 @@ app.put('/api/admin/numeros/:n', auth, wrap(async (req, res) => {
   const b = req.body || {};
   const set = {};
   if (typeof b.vendido === 'boolean') set.vendido = b.vendido;
+  if (typeof b.pagado === 'boolean') set.pagado = b.pagado;
   if (typeof b.nombre === 'string') set.nombre = b.nombre.trim().slice(0, 80);
   if (typeof b.telefono === 'string') set.telefono = b.telefono.trim().slice(0, 30);
   if (!Object.keys(set).length) return res.status(400).json({ error: 'Nada que actualizar' });
