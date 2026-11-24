@@ -50,6 +50,10 @@ main{max-width:760px;margin:0 auto;padding:0 18px 60px}
 .admin .n{pointer-events:auto;cursor:pointer}
 .admin .n:active{transform:scale(.9)}
 .n.wait{background:transparent;border-color:var(--line);color:var(--mute)}
+.admin .n.pend::after{content:"";position:absolute;top:3px;right:3px;width:6px;height:6px;border-radius:50%;background:var(--gold)}
+.n{position:relative}
+.chk{display:flex;align-items:center;gap:10px;margin:14px 0 0;font-size:15px;cursor:pointer}
+.chk input{width:22px;height:22px;padding:0;accent-color:var(--ok);cursor:pointer}
 .n.sel{outline:2px solid var(--gold);outline-offset:2px}
 .n:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .note{margin:22px 0 0;text-align:center;color:var(--mute);font-size:14px;line-height:1.6}
@@ -103,11 +107,12 @@ input:focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outline
   <div class="grid" id="grid" role="list"></div>
   <p class="note" id="note">Los números no se pueden elegir aquí. Para participar, contacta a quien organiza la rifa: él asigna tu número y lo marca en rojo.</p>
 
-  <div class="adm" id="adm" hidden>Modo organizador: toca un número para ver y editar los datos de quien lo compró. Los cambios se guardan para todos al instante.</div>
+  <div class="adm" id="adm" hidden>Modo organizador: toca un número para ver y editar los datos de quien lo compró. Los cambios se guardan para todos al instante. El punto dorado marca los números vendidos que aún no han pagado.</div>
 
   <div class="panel" id="panel" hidden>
     <h2 id="pt"></h2>
     <div class="pst"><span>Estado: <b id="stl"></b></span><button class="btn" id="st" type="button"></button></div>
+    <label class="chk" for="pg"><input type="checkbox" id="pg"><span>Ya pagó</span></label>
     <label for="pn">Nombre del comprador</label><input id="pn" autocomplete="off">
     <label for="pp">Teléfono</label><input id="pp" type="tel" inputmode="tel" autocomplete="off">
     <div class="err" id="pmsg" role="status"></div>
@@ -146,7 +151,7 @@ input:focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outline
     var c = 0;
     cells.forEach(function(b,i){
       var s = !!sold[i]; if (s) c++;
-      b.className = 'n ' + (!loaded ? 'wait' : s ? 'no' : 'ok') + (String(i) === selected ? ' sel' : '');
+      b.className = 'n ' + (!loaded ? 'wait' : s ? 'no' : 'ok') + (String(i) === selected ? ' sel' : '') + (isAdmin && s && !(items[i] && items[i].pagado) ? ' pend' : '');
       b.setAttribute('aria-label', 'Número ' + b.textContent + (!loaded ? '' : s ? ', vendido' : ', disponible'));
     });
     $('sold').textContent = loaded ? c : '–'; $('free').textContent = loaded ? 100 - c : '–';
@@ -190,7 +195,7 @@ input:focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outline
     var b = e.target.closest('.n'); if (!b || !isAdmin) return;
     selected = b.dataset.n; var d = items[selected] || {};
     $('pt').textContent = 'Número ' + selected.padStart(2,'0');
-    $('pn').value = d.nombre || ''; $('pp').value = d.telefono || ''; pmsg('');
+    $('pg').checked = !!d.pagado; $('pn').value = d.nombre || ''; $('pp').value = d.telefono || ''; pmsg('');
     $('panel').hidden = false; render();
     $('panel').scrollIntoView({behavior:'smooth', block:'nearest'});
   });
@@ -212,6 +217,15 @@ input:focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outline
       pmsg('Datos guardados.', true);
     } catch(e){ pmsg('No se pudo guardar. Inténtalo otra vez.'); }
     $('save').disabled = false;
+  };
+  $('pg').onchange = async function(){
+    if (selected === null) return;
+    var n = selected, v = $('pg').checked;
+    try {
+      await api('/admin/numeros/' + n, {method:'PUT', body: JSON.stringify({pagado: v})});
+      items[n] = Object.assign(items[n] || {n: Number(n)}, {pagado: v});
+      pmsg(v ? 'Marcado como pagado.' : 'Marcado como pendiente de pago.', true); render();
+    } catch(e){ $('pg').checked = !v; pmsg('No se pudo guardar. Inténtalo otra vez.'); }
   };
   $('pclose').onclick = function(){ selected = null; $('panel').hidden = true; render(); };
 
